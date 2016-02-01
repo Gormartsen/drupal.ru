@@ -743,15 +743,16 @@ function alpha_user_list($variables) {
   $title = $variables['title'];
   $items = array();
 
-  $output = '<div class="title">' . $title . '</div>';
+  $output = '<div class="user_list" > <div class="title">' . $title . '</div>';
   
   if (!empty($users)) {
     foreach ($users as $account) {
       $img = _prepare_user_icon($account);
       $name = theme('username', array('account' => $account));
-      $output .= '<div class="col-xs-1"> ' . $img . '<div class="name">' . $name . '</div> </div>';
+      $output .= '<div class="something"> ' . $img . '<div class="name">' . $name . '</div> </div>';
     }
   }
+  $output .= '</div>';
   return $output;
 }
 
