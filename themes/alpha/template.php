@@ -737,3 +737,46 @@ function alpha_preprocess_simple_events_upcoming_block(&$variables) {
   $variables['links']['#links']['add']['attributes']['class'] = array('btn', 'btn-primary');
   $variables['links']['#links']['list']['attributes']['class'] = array('btn', 'btn-success');
 }
+
+function alpha_user_list($variables) {
+  $users = $variables['users'];
+  $title = $variables['title'];
+  $items = array();
+
+  $output = '<div class="title">' . $title . '</div>';
+  
+  if (!empty($users)) {
+    foreach ($users as $account) {
+      $img = _prepare_user_icon($account);
+      $name = theme('username', array('account' => $account));
+      $output .= '<div class="col-xs-1"> ' . $img . '<div class="name">' . $name . '</div> </div>';
+    }
+  }
+  return $output;
+}
+
+function _prepare_user_icon($account){
+  if (!empty($account->picture)) {
+    if (is_numeric($account->picture)) {
+      $account->picture = file_load($account->picture);
+    }
+    if (!empty($account->picture->uri)) {
+      $filepath = $account->picture->uri;
+    }
+  }
+  elseif (variable_get('user_picture_default', '')) {
+    $filepath = variable_get('user_picture_default', '');
+  }
+  if (isset($filepath)) {
+    $alt = t("@user's picture", array('@user' => format_username($account)));
+    // If the image does not have a valid Drupal scheme (for eg. HTTP),
+    // don't load image styles.
+    if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
+      $img =  theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt, 'attributes' => array('class' => array('img-circle'))));
+    }
+    else {
+      $img =  theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt, 'attributes' => array('class' => array('img-circle'))));
+    }
+  }
+  return $img;
+}
