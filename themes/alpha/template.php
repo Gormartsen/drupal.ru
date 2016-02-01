@@ -749,7 +749,7 @@ function alpha_user_list($variables) {
     foreach ($users as $account) {
       $img = _prepare_user_icon($account);
       $name = theme('username', array('account' => $account));
-      $output .= '<div class="something"> ' . $img . '<div class="name">' . $name . '</div> </div>';
+      $output .= '<div class="account"> ' . $img . '<div class="name">' . $name . '</div> </div>';
     }
   }
   $output .= '</div>';
